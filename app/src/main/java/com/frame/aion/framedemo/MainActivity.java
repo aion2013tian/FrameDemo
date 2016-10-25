@@ -8,30 +8,39 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.frame.aion.framedemo.view.Rotate3DAnimation;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView rotate;
     int mDuration = 500;
     float mCenterX = 0.0f;
     float mCenterY = 0.0f;
-    float mDepthZ  = 0.0f;
+    float mDepthZ = 0.0f;
+    @BindView(R.id.rotate)
+    ImageView rotate;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.edit_depthz)
+    EditText editDepthz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rotate = (ImageView) findViewById(R.id.rotate);
+        ButterKnife.bind(this);
         final int width = this.getResources().getDisplayMetrics().widthPixels;
         final int height = this.getResources().getDisplayMetrics().heightPixels;
 //        rotate();
         findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCenterX = rotate.getWidth()/2;
-                mCenterY = rotate.getHeight()/2;
+                mCenterX = rotate.getWidth() / 2;
+                mCenterY = rotate.getHeight() / 2;
                 getDepthZ();
                 applyRotation(rotate, 0, 60);
             }
@@ -56,13 +65,10 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.edit_depthz);
         String string = editText.getText().toString();
 
-        try
-        {
+        try {
 //            mDepthZ = (float)Integer.parseInt(string);
             mDepthZ = 0;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -405,4 +405,5 @@ public class BitmapUtils {
 		canvas.drawBitmap(bitmap_in, rectF, rect, paint);
 		return roundConcerImage;
 	}
+
 }
