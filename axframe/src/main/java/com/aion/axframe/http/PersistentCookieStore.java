@@ -3,7 +3,8 @@ package com.aion.axframe.http;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.aion.axframe.utils.log.ALog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -136,7 +137,7 @@ public class PersistentCookieStore {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);
             outputStream.writeObject(cookie);
         } catch (IOException e) {
-            Log.d(LOG_TAG, "IOException in encodeCookie", e);
+            ALog.d(LOG_TAG, "IOException in encodeCookie", e);
             return null;
         }
 
@@ -157,9 +158,9 @@ public class PersistentCookieStore {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             cookie = ((SerializableOkHttpCookies) objectInputStream.readObject()).getCookies();
         } catch (IOException e) {
-            Log.d(LOG_TAG, "IOException in decodeCookie", e);
+            ALog.d(LOG_TAG, "IOException in decodeCookie", e);
         } catch (ClassNotFoundException e) {
-            Log.d(LOG_TAG, "ClassNotFoundException in decodeCookie", e);
+            ALog.d(LOG_TAG, "ClassNotFoundException in decodeCookie", e);
         }
 
         return cookie;

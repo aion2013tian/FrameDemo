@@ -3,7 +3,8 @@ package com.aion.axframe.http;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+
+import com.aion.axframe.utils.log.ALog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,7 +53,7 @@ public class DownLoadManager {
 
     public boolean  writeResponseBodyToDisk(Context context, ResponseBody body) {
 
-        Log.d(TAG, "contentType:>>>>"+ body.contentType().toString());
+        ALog.d(TAG, "contentType:>>>>"+ body.contentType().toString());
 
         String type = body.contentType().toString();
 
@@ -70,7 +71,7 @@ public class DownLoadManager {
         final String name = System.currentTimeMillis() + fileSuffix;
         final String path = context.getExternalFilesDir(null) + File.separator + name;
 
-        Log.d(TAG, "path:>>>>"+ path);
+        ALog.d(TAG, "path:>>>>"+ path);
 
         try {
             // todo change the file location/name according to your needs
@@ -88,7 +89,7 @@ public class DownLoadManager {
 
                 final long fileSize = body.contentLength();
                 long fileSizeDownloaded = 0;
-                Log.d(TAG, "file length: "+ fileSize);
+                ALog.d(TAG, "file length: "+ fileSize);
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
 
@@ -103,7 +104,7 @@ public class DownLoadManager {
 
                     fileSizeDownloaded += read;
 
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    ALog.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
                     if (progressCallBack != null) {
                         handler = new Handler(Looper.getMainLooper());
                         final long finalFileSizeDownloaded = fileSizeDownloaded;
@@ -118,7 +119,7 @@ public class DownLoadManager {
                 }
 
                 outputStream.flush();
-                Log.d(TAG, "file downloaded: " + fileSizeDownloaded + " of " + fileSize);
+                ALog.d(TAG, "file downloaded: " + fileSizeDownloaded + " of " + fileSize);
                 if (progressCallBack != null) {
                     handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -128,7 +129,7 @@ public class DownLoadManager {
 
                         }
                     });
-                    Log.d(TAG, "file downloaded: " + fileSizeDownloaded + " of " + fileSize);
+                    ALog.d(TAG, "file downloaded: " + fileSizeDownloaded + " of " + fileSize);
                 }
 
                 return true;

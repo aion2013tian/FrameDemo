@@ -1,9 +1,9 @@
 package com.aion.axframe.http;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.aion.axframe.utils.NetworkUtil;
+import com.aion.axframe.utils.log.ALog;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class CacheInterceptor implements Interceptor {
             // read from cache for 60 s
             int maxAge = 60;
             String cacheControl = request.cacheControl().toString();
-            Log.e("Tamic", "60s load cahe" + cacheControl);
+            ALog.e("60s load cahe" + cacheControl);
             return response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
@@ -46,7 +46,7 @@ public class CacheInterceptor implements Interceptor {
 //                    Toast.makeText(context, "当前无网络! 为你智能加载缓存", Toast.LENGTH_SHORT).show();
 //                }
 //            });
-            Log.e("Tamic", " no network load cahe");
+            ALog.e(" no network load cahe");
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();

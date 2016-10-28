@@ -9,24 +9,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.frame.aion.framedemo.MainActivity">
 
-    <ImageView
-        android:id="@+id/rotate"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/gift_common_wheel"/>
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/rotate"
         android:text="Hello World!" />
 
     <EditText
         android:id="@+id/edit_depthz"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_toRightOf="@+id/textView"
+        android:layout_below="@+id/textView"
         android:hint="depthz"/>
 </RelativeLayout>

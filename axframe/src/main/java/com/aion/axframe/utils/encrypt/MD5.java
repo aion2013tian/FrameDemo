@@ -1,7 +1,16 @@
 package com.aion.axframe.utils.encrypt;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * MD5加密
@@ -77,5 +86,43 @@ public class MD5 {
             ex.printStackTrace();
         }
         return result;
+    }
+
+    public static HashMap<String,String> sortMapByValues(Map<String, String> aMap) {
+
+        Set<Map.Entry<String, String>> mapEntries = aMap.entrySet();
+        List<Map.Entry<String, String>> aList = new LinkedList<>(mapEntries);
+        Collections.sort(aList, new Comparator<Map.Entry<String, String>>() {
+            @Override
+            public int compare(Map.Entry<String, String> ele1,
+                               Map.Entry<String, String> ele2) {
+
+                return ele1.getKey().compareTo(ele2.getKey());
+            }
+        });
+
+        // Storing the list into Linked HashMap to preserve the order of insertion.
+        HashMap<String, String> aMap2 = new LinkedHashMap<>();
+        for (Map.Entry<String, String> entry : aList) {
+            aMap2.put(entry.getKey(), entry.getValue());
+        }
+
+        return aMap2;
+    }
+
+    public static String GetMD5Code(String strObj) {
+        String resultString = null;
+        try {
+            resultString = strObj;
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            try {
+                resultString = byteToString(md.digest(strObj.getBytes("UTF-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+        }
+        return resultString;
     }
 }
