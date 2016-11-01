@@ -17,11 +17,26 @@ import okhttp3.Response;
  */
 public class CacheInterceptor implements Interceptor {
 
-
     private Context context;
+    private String cacheControlValue;
+    private String cacheOnlineControlValue;
+    //set cahe times is 3 days
+    private static final int maxStale = 60 * 60 * 24 * 3;
+    // read from cache for 60 s
+    private static final int maxOnlineStale = 60;
 
     public CacheInterceptor(Context context) {
+        this(context, String.format("max-stale=%d", maxStale));
+    }
+
+    public CacheInterceptor(Context context, String cacheControlValue) {
+        this(context, cacheControlValue, String.format("max-stale=%d", maxOnlineStale));
+    }
+
+    public CacheInterceptor(Context context, String cacheControlValue, String cacheOnlineControlValue) {
         this.context = context;
+        this. cacheControlValue = cacheControlValue;
+        this.cacheOnlineControlValue = cacheOnlineControlValue;
     }
 
     @Override
@@ -29,14 +44,11 @@ public class CacheInterceptor implements Interceptor {
         Request request = chain.request();
         if (NetworkUtil.isNetworkAvailable(context)) {
             Response response = chain.proceed(request);
-            // read from cache for 60 s
-            int maxAge = 60;
-            String cacheControl = request.cacheControl().toString();
-            ALog.e("60s load cahe" + cacheControl);
+//            String cacheControl = request.cacheControl().toString();
             return response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
-                    .header("Cache-Control", "public, max-age=" + maxAge)
+                    .header("Cache-Control", "public, " + cacheOnlineControlValue)
                     .build();
         } else {
             //TODO 当前无网络提醒
@@ -51,12 +63,10 @@ public class CacheInterceptor implements Interceptor {
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
             Response response = chain.proceed(request);
-            //set cahe times is 3 days
-            int maxStale = 60 * 60 * 24 * 3;
             return response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
-                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                    .header("Cache-Control", "public, only-if-cached, " + cacheControlValue)
                     .build();
         }
     }

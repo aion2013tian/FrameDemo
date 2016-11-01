@@ -31,6 +31,10 @@ public class DownLoadManager {
 
     private static String fileSuffix="";
 
+    public static boolean isDownLoading = false;
+
+    public static boolean isCancel = false;
+
     private Handler handler;
 
     public DownLoadManager(ProgressCallBack progressCallBack) {

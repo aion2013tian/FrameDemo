@@ -35,5 +35,4 @@ dependencies {
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.jakewharton:butterknife:8.4.0'
 }
