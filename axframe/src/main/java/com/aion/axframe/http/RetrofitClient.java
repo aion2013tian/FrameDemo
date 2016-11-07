@@ -31,6 +31,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -82,39 +83,43 @@ public class RetrofitClient {
                 .subscribe(subscriber);
     }
 
+    /**
+     * 运行线程切换管理
+     * @return
+     */
     Observable.Transformer schedulersTransformer() {
         return new Observable.Transformer() {
             @Override
             public Object call(Object observable) {
-                return ((Observable)  observable).subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                return ((Observable)  observable).subscribeOn(Schedulers.io())//IO线程解析数据
+                        .unsubscribeOn(Schedulers.io())//IO线程解除订阅
+                        .observeOn(AndroidSchedulers.mainThread());//UI线程返回处理后的数据
             }
         };
     }
 
-    public Observable baseGet(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
-        Observable<BaseResponse> observable = builder.apiManager.executeGet(url, parameters);
-        observable.compose(schedulersTransformer()).subscribe(subscriber);
-        return observable;
+    public Subscription baseGet(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
+        return builder.apiManager.executeGet(url, parameters)
+                .compose(schedulersTransformer())
+                .subscribe(subscriber);
     }
 
-    public Observable basePost(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
-        Observable<BaseResponse> observable = builder.apiManager.executePost(url, parameters);
-        observable.compose(schedulersTransformer()).subscribe(subscriber);
-        return observable;
+    public Subscription basePost(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
+        return builder.apiManager.executePost(url, parameters)
+                .compose(schedulersTransformer())
+                .subscribe(subscriber);
     }
 
-    public Observable basePut(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
-        Observable<BaseResponse> observable = builder.apiManager.executePut(url, parameters);
-        observable.compose(schedulersTransformer()).subscribe(subscriber);
-        return observable;
+    public Subscription basePut(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
+        return builder.apiManager.executePut(url, parameters)
+                .compose(schedulersTransformer())
+                .subscribe(subscriber);
     }
 
-    public Observable baseDelete(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
-        Observable<BaseResponse> observable = builder.apiManager.executeDelete(url, parameters);
-        observable.compose(schedulersTransformer()).subscribe(subscriber);
-        return observable;
+    public Subscription baseDelete(String url, Map<String, String> parameters, BaseSubscriber<? extends BaseResponse> subscriber) {
+        return builder.apiManager.executeDelete(url, parameters)
+                .compose(schedulersTransformer())
+                .subscribe(subscriber);
     }
 
     /**
